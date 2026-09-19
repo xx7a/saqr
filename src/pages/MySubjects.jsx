@@ -32,23 +32,32 @@ export default function MySubjects() {
 
   const loadData = async () => {
     try {
-      // Get enrollment
-      const enrollments = await base44.entities.TrackEnrollment.filter({ user_id: user.id, track_id: trackId });
+      // Resolve the student's active track when /my-subjects is opened without an id.
+      const enrollments = trackId
+        ? await base44.entities.TrackEnrollment.filter({ user_id: user.id, track_id: trackId })
+        : await base44.entities.TrackEnrollment.filter({ user_id: user.id });
       const enroll = enrollments?.[0];
-      setEnrollment(enroll);
 
       if (!enroll) {
-        navigate('/tracks');
+        navigate('/tracks', { replace: true });
         return;
       }
 
-      // Fetch subjects, all track lessons, progress, and tests in parallel
+      const activeTrackId = trackId || enroll.track_id;
+      if (!trackId) {
+        navigate(`/my-subjects/${activeTrackId}`, { replace: true });
+        return;
+      }
+      setEnrollment(enroll);
+
+      // Fetch subjects, all track lessons, progress, and tests in parallel.
+      // SubjectTest may legitimately be empty on migrated Base44 content.
       const [subjectsData, trackLessonsData, progressData, testsData, passedData] = await Promise.all([
-        base44.entities.Subject.filter({ track_id: trackId, is_published: true }, 'order', 50),
-        base44.entities.Lesson.filter({ track_id: trackId, is_published: true }, 'order', 200),
-        base44.entities.LessonProgress.filter({ user_id: user.id, track_id: trackId }),
-        base44.entities.SubjectTest.filter({ track_id: trackId, is_published: true }),
-        base44.entities.TestAttempt.filter({ user_id: user.id, track_id: trackId, passed: true }),
+        base44.entities.Subject.filter({ track_id: activeTrackId, is_published: true }, 'order', 50),
+        base44.entities.Lesson.filter({ track_id: activeTrackId, is_published: true }, 'order', 200),
+        base44.entities.LessonProgress.filter({ user_id: user.id, track_id: activeTrackId }),
+        base44.entities.SubjectTest.filter({ track_id: activeTrackId, is_published: true }).catch(() => []),
+        base44.entities.TestAttempt.filter({ user_id: user.id, track_id: activeTrackId, passed: true }).catch(() => []),
       ]);
 
       setSubjects(subjectsData || []);
