@@ -53,6 +53,14 @@ class EntityController extends Controller
 
     public function index(Request $r, $e)
     {
+        if ($e === 'User') {
+            abort_unless(($r->user()->role ?? '') === 'admin', 403);
+            return DB::table('users')->orderBy('created_at', 'desc')->limit(min((int)$r->query('limit', 100), 1000))->get()
+                ->map(fn($u) => [
+                    'id' => $u->id, 'email' => $u->email, 'full_name' => $u->name,
+                    'role' => $u->role ?? 'student', 'created_date' => $u->created_at, 'updated_date' => $u->updated_at,
+                ]);
+        }
         $q = $this->applySort($this->q($e), $r->query('sort', '-created_date'));
         return $q->limit(min((int)$r->query('limit', 100), 1000))->get()->map(fn($x) => $this->out($x));
     }
