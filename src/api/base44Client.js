@@ -46,7 +46,7 @@ const auth = {
   loginWithProvider: (provider) => { location.href=`${API}/auth/oauth/${provider}`; },
 };
 
-const functions = { invoke: (name, data={}) => request(`/functions/${name}`,{method:'POST',body:JSON.stringify(data)}).then(data=>({data})) };
+const functions = { invoke: (name, payload={}) => request(`/functions/${name}`,{method:'POST',body:JSON.stringify(payload)}).then(result => ({ ...(result && typeof result === 'object' ? result : {}), data: result })) };
 const app = { getPublicSettings: () => request('/public-settings') };
 const integrations = { Core: { UploadPublicFile: async ({file}) => { const fd=new FormData();fd.append('file',file);return request('/uploads',{method:'POST',body:fd}); } } };
 
