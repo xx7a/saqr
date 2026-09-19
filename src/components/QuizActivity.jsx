@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, XCircle, RotateCcw, ChevronLeft, Lightbulb, Award } from 'lucide-react';
 import { toast } from 'sonner';
@@ -16,7 +16,18 @@ import { AnimatedButton } from '@/components/AnimationSystem';
  * @param {Function} onComplete — called once when quiz is passed
  */
 export default function QuizActivity({ activities, lessonId, userId, onComplete }) {
-  const questions = (activities || []).filter((a) => a && a.options && a.options.length > 0);
+  // Normalize and shuffle answer positions once whenever the loaded activities change.
+  // This hook must stay before every conditional return so React's hook order is stable.
+  const questions = useMemo(() => (activities || [])
+    .filter((a) => a && Array.isArray(a.options) && a.options.length > 0)
+    .map((activity) => {
+      const options = [...activity.options];
+      for (let i = options.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [options[i], options[j]] = [options[j], options[i]];
+      }
+      return { ...activity, options };
+    }), [activities]);
   const total = questions.length;
   const passThreshold = total > 0 ? Math.ceil(total * 2 / 3) : 1;
 
