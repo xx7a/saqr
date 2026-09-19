@@ -115,7 +115,7 @@ export default function SpecializationFinalExam() {
     <div className="flex justify-center gap-3 flex-wrap">
       {!result.passed && <button onClick={reset} className="px-5 py-3 rounded-xl bg-primary text-primary-foreground flex items-center gap-2"><RotateCcw className="w-4 h-4"/> إعادة الاختبار</button>}
       {result.passed && (isAdminPreview
-        ? <div className="px-5 py-3 rounded-xl border border-primary/30 bg-primary/5 text-primary flex items-center gap-2"><Award className="w-4 h-4"/> معاينة فقط — لن تُصدر شهادة للأدمن</div>
+        ? <Link to={`/admin/certificates?preview=1&specialization_id=${specId}&score=${result.percent}`} className="px-5 py-3 rounded-xl bg-gradient-primary text-white flex items-center gap-2"><Award className="w-4 h-4"/> معاينة الشهادة الاحترافية</Link>
         : <Link to="/certificates" className="px-5 py-3 rounded-xl bg-gradient-primary text-white flex items-center gap-2"><Award className="w-4 h-4"/> الشهادة الاحترافية</Link>
       )}
       <Link to={backToSpecialization} className="px-5 py-3 rounded-xl border border-border">العودة للتخصص</Link>
