@@ -18,6 +18,7 @@ class LabController extends Controller
             'awardLabPoints' => $this->awardLabPoints($r),
             'issueCertificate' => $this->issueCertificate($r),
             'verifyCertificate' => $this->verifyCertificate($r),
+            'updateUserRole' => $this->updateUserRole($r),
             'submitRealLabFlag' => $this->submitRealLabFlag($r),
             'startRealLab', 'testStartLab' => $this->start($r),
             'getRealLabStatus' => $this->status($r),
@@ -235,6 +236,18 @@ class LabController extends Controller
             'track_name' => $trackId ? ($target['name'] ?? $target['name_en'] ?? '') : '',
         ]);
         return ['certificate' => $cert, 'already_exists' => false];
+    }
+
+    private function updateUserRole(Request $r): array
+    {
+        abort_unless(($r->user()->role ?? '') === 'admin', 403);
+        $targetId = $r->input('targetUserId');
+        $role = $r->input('newRole');
+        abort_unless(in_array($role, ['student', 'admin'], true), 422, 'Invalid role');
+        abort_if((string)$targetId === (string)$r->user()->id, 422, 'You cannot change your own role');
+        $updated = DB::table('users')->where('id', $targetId)->update(['role' => $role, 'updated_at' => now()]);
+        abort_unless($updated, 404, 'User not found');
+        return ['success' => true];
     }
 
     public function verifyCertificate(Request $r): array
