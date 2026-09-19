@@ -104,6 +104,12 @@ export default function Home() {
               >
                 {t('home.exploreTracks')}
               </Link>
+              <button
+                type="button"
+                className="px-6 py-3 bg-card border border-border text-foreground rounded-xl font-medium hover:border-primary/40 transition-colors duration-180"
+              >
+                {lang === 'ar' ? 'تجربة' : 'Demo'}
+              </button>
             </div>
           </motion.div>
         </div>
