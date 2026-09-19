@@ -18,6 +18,9 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::get('/auth/oauth/google', [AuthController::class, 'googleRedirect']);
 Route::get('/auth/oauth/google/callback', [AuthController::class, 'googleCallback']);
 
+// Public certificate verification
+Route::post('/functions/verifyCertificate', [LabController::class, 'verifyCertificate']);
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/auth/me', [AuthController::class, 'me']);
