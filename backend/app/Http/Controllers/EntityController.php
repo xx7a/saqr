@@ -23,6 +23,20 @@ class EntityController extends Controller
         'Certificate','LabReward','RealLabSession','LabLog','ActivityLog','UserBadge',
     ];
 
+    private const PRIVATE_ENTITIES = [
+        'LessonProgress','TrackEnrollment','SpecializationEnrollment','CompassAttempt',
+        'TestAttempt','ActivityAttempt','LabProgress','RealLabCompletion','Notification',
+        'FinalExamAttempt','Certificate','LabReward','RealLabSession','ActivityLog','UserBadge',
+    ];
+
+    private function scopeRead($q, Request $r, string $entity)
+    {
+        if (($r->user()->role ?? 'student') !== 'admin' && in_array($entity, self::PRIVATE_ENTITIES, true)) {
+            $q->whereRaw($this->jsonExpr('user_id').' = ?', [$this->filterValue($r->user()->id)]);
+        }
+        return $q;
+    }
+
     private function guardWrite(Request $r, string $entity): void
     {
         $role = (string)($r->user()->role ?? 'student');
@@ -112,13 +126,13 @@ class EntityController extends Controller
                     'role' => $u->role ?? 'student', 'created_date' => $u->created_at, 'updated_date' => $u->updated_at,
                 ]);
         }
-        $q = $this->applySort($this->q($e), $r->query('sort', '-created_date'));
+        $q = $this->applySort($this->scopeRead($this->q($e), $r, $e), $r->query('sort', '-created_date'));
         return $q->limit(min((int)$r->query('limit', 100), 1000))->get()->map(fn($x) => $this->out($x, $r));
     }
 
     public function filter(Request $r, $e)
     {
-        $q = $this->q($e);
+        $q = $this->scopeRead($this->q($e), $r, $e);
         foreach (($r->input('filters') ?: []) as $k => $v) {
             $q->whereRaw($this->jsonExpr((string)$k) . ' = ?', [$this->filterValue($v)]);
         }
@@ -128,7 +142,7 @@ class EntityController extends Controller
 
     public function show(Request $r, $e, $id)
     {
-        return response()->json($this->out($this->q($e)->where('id', $id)->first(), $r) ?? abort(404));
+        return response()->json($this->out($this->scopeRead($this->q($e), $r, $e)->where('id', $id)->first(), $r) ?? abort(404));
     }
 
     public function store(Request $r, $e)
