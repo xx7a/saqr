@@ -51,6 +51,7 @@ export default function SpecializationFinalExam() {
   const { lang } = useTranslation();
   const [searchParams] = useSearchParams();
   const isAdminPreview = user?.role === 'admin' && searchParams.get('preview') === '1';
+  const backToSpecialization = isAdminPreview ? '/admin/curriculum' : `/specialization/${specId}`;
   const questions = useMemo(shuffledQuestions, []);
   const [spec, setSpec] = useState(null);
   const [eligible, setEligible] = useState(false);
@@ -103,7 +104,7 @@ export default function SpecializationFinalExam() {
   const mm = String(Math.floor(seconds/60)).padStart(2,'0'), ss = String(seconds%60).padStart(2,'0');
 
   if (loading) return <Layout role="student"><div className="card-base p-8 animate-pulse h-52" /></Layout>;
-  if (!eligible) return <Layout role="student"><div className="max-w-2xl mx-auto card-base p-8 text-center"><ShieldCheck className="w-12 h-12 text-primary mx-auto mb-4"/><h1 className="text-2xl font-bold mb-2">الاختبار التخصصي النهائي</h1><p className="text-foreground-secondary mb-5">يُفتح الاختبار بعد إكمال جميع دروس تخصصك.</p><Link to={`/specialization/${specId}`} className="text-primary">العودة إلى التخصص</Link></div></Layout>;
+  if (!eligible) return <Layout role="student"><div className="max-w-2xl mx-auto card-base p-8 text-center"><ShieldCheck className="w-12 h-12 text-primary mx-auto mb-4"/><h1 className="text-2xl font-bold mb-2">الاختبار التخصصي النهائي</h1><p className="text-foreground-secondary mb-5">يُفتح الاختبار بعد إكمال جميع دروس تخصصك.</p><Link to={backToSpecialization} className="text-primary">العودة إلى التخصص</Link></div></Layout>;
 
   if (result) return <Layout role="student"><div className="max-w-2xl mx-auto card-base p-8 text-center">
     {result.passed ? <CheckCircle2 className="w-16 h-16 text-success mx-auto mb-4"/> : <XCircle className="w-16 h-16 text-destructive mx-auto mb-4"/>}
@@ -113,8 +114,11 @@ export default function SpecializationFinalExam() {
     <p className="text-foreground-secondary mb-6">أجبت بشكل صحيح على {result.correct} من {result.total}. درجة النجاح 70%.</p>
     <div className="flex justify-center gap-3 flex-wrap">
       {!result.passed && <button onClick={reset} className="px-5 py-3 rounded-xl bg-primary text-primary-foreground flex items-center gap-2"><RotateCcw className="w-4 h-4"/> إعادة الاختبار</button>}
-      {result.passed && <Link to="/certificates" className="px-5 py-3 rounded-xl bg-gradient-primary text-white flex items-center gap-2"><Award className="w-4 h-4"/> الشهادة الاحترافية</Link>}
-      <Link to={`/specialization/${specId}`} className="px-5 py-3 rounded-xl border border-border">العودة للتخصص</Link>
+      {result.passed && (isAdminPreview
+        ? <div className="px-5 py-3 rounded-xl border border-primary/30 bg-primary/5 text-primary flex items-center gap-2"><Award className="w-4 h-4"/> معاينة فقط — لن تُصدر شهادة للأدمن</div>
+        : <Link to="/certificates" className="px-5 py-3 rounded-xl bg-gradient-primary text-white flex items-center gap-2"><Award className="w-4 h-4"/> الشهادة الاحترافية</Link>
+      )}
+      <Link to={backToSpecialization} className="px-5 py-3 rounded-xl border border-border">العودة للتخصص</Link>
     </div>
   </div></Layout>;
 
