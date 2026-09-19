@@ -39,10 +39,13 @@ class EntityController extends Controller
         }
         return $data;
     }
-    private function out($r)
+    private function out($r, ?Request $request = null)
     {
         if (!$r) return null;
         $d = json_decode($r->data, true) ?: [];
+        if ($request && ($request->user()->role ?? 'student') !== 'admin' && ($r->entity ?? '') === 'RealLab') {
+            unset($d['correct_flag'], $d['flag'], $d['solution']);
+        }
         return array_merge($d, [
             'id' => $r->id,
             'created_date' => $r->created_at,
@@ -110,7 +113,7 @@ class EntityController extends Controller
                 ]);
         }
         $q = $this->applySort($this->q($e), $r->query('sort', '-created_date'));
-        return $q->limit(min((int)$r->query('limit', 100), 1000))->get()->map(fn($x) => $this->out($x));
+        return $q->limit(min((int)$r->query('limit', 100), 1000))->get()->map(fn($x) => $this->out($x, $r));
     }
 
     public function filter(Request $r, $e)
@@ -120,12 +123,12 @@ class EntityController extends Controller
             $q->whereRaw($this->jsonExpr((string)$k) . ' = ?', [$this->filterValue($v)]);
         }
         $q = $this->applySort($q, $r->input('sort', '-created_date'));
-        return $q->limit(min((int)$r->input('limit', 100), 1000))->get()->map(fn($x) => $this->out($x));
+        return $q->limit(min((int)$r->input('limit', 100), 1000))->get()->map(fn($x) => $this->out($x, $r));
     }
 
-    public function show($e, $id)
+    public function show(Request $r, $e, $id)
     {
-        return response()->json($this->out($this->q($e)->where('id', $id)->first()) ?? abort(404));
+        return response()->json($this->out($this->q($e)->where('id', $id)->first(), $r) ?? abort(404));
     }
 
     public function store(Request $r, $e)
@@ -137,7 +140,7 @@ class EntityController extends Controller
             'id' => $id, 'entity' => $e, 'data' => json_encode($payload),
             'created_at' => now(), 'updated_at' => now()
         ]);
-        return $this->show($e, $id);
+        return $this->show($r, $e, $id);
     }
 
     public function update(Request $r, $e, $id)
@@ -151,7 +154,7 @@ class EntityController extends Controller
         }
         $data = array_merge($existing, $this->sanitizeOwned($r, $e, $r->all()));
         $this->q($e)->where('id', $id)->update(['data' => json_encode($data), 'updated_at' => now()]);
-        return $this->show($e, $id);
+        return $this->show($r, $e, $id);
     }
 
     public function destroy(Request $r, $e, $id)
