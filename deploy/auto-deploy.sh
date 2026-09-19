@@ -24,7 +24,10 @@ npm ci
 npm run build
 
 cd backend
+export HOME=/root
+export COMPOSER_HOME=/root/.composer
 export COMPOSER_ALLOW_SUPERUSER=1
+
 composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
 php artisan migrate --force
 php artisan optimize:clear
