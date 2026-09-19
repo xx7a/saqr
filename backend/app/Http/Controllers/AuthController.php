@@ -104,8 +104,8 @@ class AuthController extends Controller
         $token = $u->createToken('saqr')->plainTextToken;
 
         return redirect(
-            'https://test.saqr5.com/post-login?token=' .
-            urlencode($token)
+            rtrim((string) env('FRONTEND_URL', 'https://test.saqr5.com'), '/') .
+            '/post-login#token=' . urlencode($token)
         );
     }
 
