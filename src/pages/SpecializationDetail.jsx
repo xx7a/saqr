@@ -349,9 +349,6 @@ export default function SpecializationDetail() {
                 {lang === 'ar' ? '25 سؤالًا • 30 دقيقة • درجة النجاح 70%' : '25 questions • 30 minutes • 70% passing score'}
               </p>
             </div>
-          )}                </button>
-              )}
-            </div>
           )}
         </motion.div>
 
