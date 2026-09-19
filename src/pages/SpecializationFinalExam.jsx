@@ -61,6 +61,7 @@ export default function SpecializationFinalExam() {
   const [answers, setAnswers] = useState({});
   const [seconds, setSeconds] = useState(30 * 60);
   const [result, setResult] = useState(null);
+  const [previewCertificate, setPreviewCertificate] = useState(false);
 
   useEffect(() => {
     if (!user || !specId) return;
@@ -106,6 +107,23 @@ export default function SpecializationFinalExam() {
   if (loading) return <Layout role="student"><div className="card-base p-8 animate-pulse h-52" /></Layout>;
   if (!eligible) return <Layout role="student"><div className="max-w-2xl mx-auto card-base p-8 text-center"><ShieldCheck className="w-12 h-12 text-primary mx-auto mb-4"/><h1 className="text-2xl font-bold mb-2">الاختبار التخصصي النهائي</h1><p className="text-foreground-secondary mb-5">يُفتح الاختبار بعد إكمال جميع دروس تخصصك.</p><Link to={backToSpecialization} className="text-primary">العودة إلى التخصص</Link></div></Layout>;
 
+  if (previewCertificate && result?.passed && isAdminPreview) {
+    const demoCertificate = {
+      certificate_type: 'specialization',
+      specialization_name: spec ? localized(spec, 'name', lang) : 'التخصص',
+      user_name: user?.name || user?.full_name || 'طالب صقر',
+      issue_date: new Date().toISOString(),
+      verification_code: 'PREVIEW-ONLY',
+    };
+    return <Layout role="admin"><div className="max-w-5xl mx-auto space-y-4">
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div><h1 className="text-xl font-bold">معاينة الشهادة الاحترافية</h1><p className="text-sm text-foreground-secondary">معاينة للأدمن فقط — لا يتم إنشاء شهادة أو رقم تحقق حقيقي.</p></div>
+        <button onClick={() => setPreviewCertificate(false)} className="px-4 py-2 rounded-lg border border-border">العودة لنتيجة الاختبار</button>
+      </div>
+      <CertificateTemplate certificate={demoCertificate} />
+    </div></Layout>;
+  }
+
   if (result) return <Layout role="student"><div className="max-w-2xl mx-auto card-base p-8 text-center">
     {result.passed ? <CheckCircle2 className="w-16 h-16 text-success mx-auto mb-4"/> : <XCircle className="w-16 h-16 text-destructive mx-auto mb-4"/>}
     <p className="text-sm text-primary font-medium mb-2">الاختبار التخصصي النهائي</p>
@@ -115,7 +133,7 @@ export default function SpecializationFinalExam() {
     <div className="flex justify-center gap-3 flex-wrap">
       {!result.passed && <button onClick={reset} className="px-5 py-3 rounded-xl bg-primary text-primary-foreground flex items-center gap-2"><RotateCcw className="w-4 h-4"/> إعادة الاختبار</button>}
       {result.passed && (isAdminPreview
-        ? <Link to={`/admin/certificates?preview=1&specialization_id=${specId}&score=${result.percent}`} className="px-5 py-3 rounded-xl bg-gradient-primary text-white flex items-center gap-2"><Award className="w-4 h-4"/> معاينة الشهادة الاحترافية</Link>
+        ? <button onClick={() => setPreviewCertificate(true)} className="px-5 py-3 rounded-xl bg-gradient-primary text-white flex items-center gap-2"><Award className="w-4 h-4"/> معاينة الشهادة الاحترافية</button>
         : <Link to="/certificates" className="px-5 py-3 rounded-xl bg-gradient-primary text-white flex items-center gap-2"><Award className="w-4 h-4"/> الشهادة الاحترافية</Link>
       )}
       <Link to={backToSpecialization} className="px-5 py-3 rounded-xl border border-border">العودة للتخصص</Link>
