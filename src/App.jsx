@@ -49,6 +49,7 @@ import RealLabs from '@/pages/RealLabs';
 import RealLabPlayer from '@/pages/RealLabPlayer';
 import Assignments from '@/pages/Assignments';
 import Progress from '@/pages/Progress';
+import SpecializationFinalExam from '@/pages/SpecializationFinalExam';
 
 // Admin pages
 import AdminDashboard from '@/pages/AdminDashboard';
@@ -140,6 +141,7 @@ const AuthenticatedApp = () => {
         <Route path="/real-lab/:labId" element={<RealLabPlayer />} />
         <Route path="/assignments" element={<Assignments />} />
         <Route path="/progress" element={<Progress />} />
+        <Route path="/specialization/:specId/final-exam" element={<SpecializationFinalExam />} />
       </Route>
 
       {/* Protected admin routes */}
