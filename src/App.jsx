@@ -13,6 +13,7 @@ import RoleGuard from '@/components/RoleGuard';
 import PostLoginRedirect from '@/components/PostLoginRedirect';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { NavigationProgress } from '@/components/AnimationSystem';
+import HelpChat from '@/components/HelpChat';
 
 // Auth pages
 import Login from '@/pages/Login';
@@ -91,6 +92,7 @@ const AuthenticatedApp = () => {
   return (
     <>
       <NavigationProgress />
+      <HelpChat />
       <AnimatePresence mode="wait">
         <motion.div
           key={location.pathname}
