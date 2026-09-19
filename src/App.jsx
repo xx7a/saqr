@@ -171,7 +171,7 @@ const AuthenticatedApp = () => {
         <Route path="/admin/lab-sessions" element={<AdminLabSessions />} />
         <Route path="/admin/lab-logs" element={<AdminLabLogs />} />
         {/* Admin-only preview of the student final exam */}
-        <Route path="/specialization/:specId/final-exam" element={<SpecializationFinalExam />} />
+        <Route path="/admin/specialization/:specId/final-exam" element={<SpecializationFinalExam />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
