@@ -43,10 +43,16 @@ export default function LabPlayer() {
   const [showCompletion, setShowCompletion] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const [awardedPoints, setAwardedPoints] = useState(0);
+  const validLabId = /^[a-f0-9]{24}$/i.test(labId || '') || /^[0-9a-f]{8}-[0-9a-f-]{27}$/i.test(labId || '');
 
   useEffect(() => {
-    if (user && labId) loadData();
-  }, [user, labId]);
+    if (!labId) return;
+    if (!validLabId) {
+      navigate('/labs', { replace: true });
+      return;
+    }
+    if (user) loadData();
+  }, [user, labId, validLabId, navigate]);
 
   const loadData = async () => {
     try {
@@ -177,6 +183,10 @@ export default function LabPlayer() {
     }
     toast.info(lang === 'ar' ? 'تم إعادة ضبط المختبر' : 'Lab reset');
   };
+
+  if (!validLabId) {
+    return null;
+  }
 
   if (loading) {
     return (
