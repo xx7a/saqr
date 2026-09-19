@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import {
   Plus, Edit2, Trash2, ChevronDown, ChevronLeft, Search, Eye, EyeOff,
   ArrowUp, ArrowDown, BookOpen, FileText, GraduationCap, Shield,
@@ -343,6 +344,15 @@ export default function AdminCurriculum() {
                     </div>
                     <span className="text-xs text-foreground-secondary shrink-0">{itemSubjects.length} {lang === 'ar' ? 'مادة' : 'subjects'}</span>
                     <div className="flex items-center gap-1 shrink-0">
+                      {tab === 'specialization' && (
+                        <Link
+                          to={`/specialization/${item.id}/final-exam?preview=1`}
+                          className="px-3 py-1.5 me-1 rounded-lg border border-primary/40 bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 transition-colors"
+                          title={lang === 'ar' ? 'تجربة الاختبار النهائي مباشرة' : 'Preview final exam directly'}
+                        >
+                          {lang === 'ar' ? 'معاينة الاختبار النهائي' : 'Preview final exam'}
+                        </Link>
+                      )}
                       <button
                         onClick={() => handleReorder(tab === 'foundation' ? 'track' : 'specialization', topLevel, idx, -1)}
                         disabled={idx === 0 || savingOrder}
