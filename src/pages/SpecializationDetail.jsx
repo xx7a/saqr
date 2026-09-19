@@ -326,6 +326,17 @@ export default function SpecializationDetail() {
               </Link>
             </div>
           )}
+          {user?.role === 'admin' && specialization && (
+            <div className="mt-4">
+              <Link
+                to={`/specialization/${specialization.id}/final-exam?preview=1`}
+                className="inline-flex items-center gap-2 px-5 py-2.5 border border-primary/40 text-primary rounded-lg font-medium hover:bg-primary/10 transition-colors"
+              >
+                <Award className="w-4 h-4" /> {lang === 'ar' ? 'معاينة الاختبار النهائي — أدمن' : 'Preview final exam — Admin'}
+              </Link>
+            </div>
+          )}
+
           {isEnrolled && !firstIncompleteLesson && realLessonCount > 0 && (
             <div className="mt-4">
               <Link
