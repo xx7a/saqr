@@ -92,7 +92,6 @@ const AuthenticatedApp = () => {
   return (
     <>
       <NavigationProgress />
-      <HelpChat />
       <AnimatePresence mode="wait">
         <motion.div
           key={location.pathname}
@@ -189,6 +188,7 @@ function App() {
               <AuthenticatedApp />
             </ErrorBoundary>
           </Router>
+          <HelpChat />
           <Toaster />
           <SonnerToaster position="top-center" richColors closeButton />
         </QueryClientProvider>
