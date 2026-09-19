@@ -346,7 +346,7 @@ export default function AdminCurriculum() {
                     <div className="flex items-center gap-1 shrink-0">
                       {tab === 'specialization' && (
                         <Link
-                          to={`/specialization/${item.id}/final-exam?preview=1`}
+                          to={`/admin/specialization/${item.id}/final-exam?preview=1`}
                           className="px-3 py-1.5 me-1 rounded-lg border border-primary/40 bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 transition-colors"
                           title={lang === 'ar' ? 'تجربة الاختبار النهائي مباشرة' : 'Preview final exam directly'}
                         >
