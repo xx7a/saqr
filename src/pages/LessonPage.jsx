@@ -79,16 +79,7 @@ export default function LessonPage() {
 
       // Get all activities (quiz questions) for this lesson
       const activitiesData = await base44.entities.LessonActivity.filter({ lesson_id: lessonId }, 'order', 10);
-      const shuffledActivities = (activitiesData || []).map((activity) => {
-        if (!Array.isArray(activity?.options)) return activity;
-        const options = [...activity.options];
-        for (let i = options.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [options[i], options[j]] = [options[j], options[i]];
-        }
-        return { ...activity, options };
-      });
-      setActivities(shuffledActivities);
+      setActivities(activitiesData || []);
 
       // Get lab for this lesson (only lesson-tied labs, not independent)
       const labData = await base44.entities.Lab.filter({ lesson_id: lessonId, lab_type: 'lesson' });
