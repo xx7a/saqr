@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, XCircle, RotateCcw, ChevronLeft, Lightbulb, Award } from 'lucide-react';
 import { toast } from 'sonner';
