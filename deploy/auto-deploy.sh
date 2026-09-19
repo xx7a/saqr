@@ -10,6 +10,9 @@ flock -n 9 || exit 0
 
 cd "$APP_DIR"
 
+# Keep the deploy script executable across pulls/resets.
+chmod +x "$APP_DIR/deploy/auto-deploy.sh" 2>/dev/null || true
+
 git fetch origin main --quiet
 LOCAL="$(git rev-parse HEAD)"
 REMOTE="$(git rev-parse origin/main)"
