@@ -14,14 +14,26 @@ git fetch origin main --quiet
 LOCAL="$(git rev-parse HEAD)"
 REMOTE="$(git rev-parse origin/main)"
 
-[ "$LOCAL" = "$REMOTE" ] && exit 0
+DIST_MARKER="$APP_DIR/dist/.saqr-deployed-commit"
+DEPLOYED="$(cat "$DIST_MARKER" 2>/dev/null || true)"
 
-echo "[$(date -Is)] Deploying $REMOTE" >> "$LOG_FILE"
+# Deploy whenever the working tree is behind OR the built frontend does not
+# correspond to the current commit. This makes failed builds retryable.
+if [ "$LOCAL" != "$REMOTE" ]; then
+  echo "[$(date -Is)] Pulling $REMOTE" >> "$LOG_FILE"
+  git pull --ff-only origin main
+  LOCAL="$(git rev-parse HEAD)"
+fi
 
-git pull --ff-only origin main
+[ "$DEPLOYED" = "$LOCAL" ] && exit 0
+
+echo "[$(date -Is)] Building $LOCAL" >> "$LOG_FILE"
 
 npm ci
 npm run build
+
+mkdir -p "$APP_DIR/dist"
+printf '%s\n' "$LOCAL" > "$DIST_MARKER"
 
 cd backend
 export HOME=/root
@@ -36,4 +48,4 @@ chown -R www-data:www-data storage bootstrap/cache database
 chmod -R 775 storage bootstrap/cache database
 [ -f database/database.sqlite ] && chmod 664 database/database.sqlite
 
-echo "[$(date -Is)] Deploy complete $REMOTE" >> "$LOG_FILE"
+echo "[$(date -Is)] Deploy complete $LOCAL" >> "$LOG_FILE"
