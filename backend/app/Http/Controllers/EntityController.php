@@ -20,7 +20,23 @@ class EntityController extends Controller
 
     private function q($e)
     {
-        return DB::table('entity_records')->where('entity', $e);
+        $q = DB::table('entity_records')->where('entity', $e);
+
+        // Ignore malformed imported record IDs. Valid Base44 IDs are 24 hex chars;
+        // records created by the self-hosted app use UUIDs.
+        if (DB::connection()->getDriverName() === 'sqlite') {
+            $q->where(function ($ids) {
+                $ids->where(function ($base44) {
+                    $base44->whereRaw('length(id) = 24')
+                        ->whereRaw("lower(id) NOT GLOB '*[^0-9a-f]*'");
+                })->orWhere(function ($uuid) {
+                    $uuid->whereRaw('length(id) = 36')
+                        ->whereRaw("id GLOB '????????-????-????-????-????????????'");
+                });
+            });
+        }
+
+        return $q;
     }
 
     private function jsonExpr(string $field): string
