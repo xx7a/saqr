@@ -1,0 +1,138 @@
+{
+  "name": "RealLab",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "title_en": {
+      "type": "string",
+      "description": "English lab title"
+    },
+    "short_description": {
+      "type": "string"
+    },
+    "short_description_en": {
+      "type": "string",
+      "description": "English short description"
+    },
+    "scenario": {
+      "type": "string"
+    },
+    "scenario_en": {
+      "type": "string",
+      "description": "English scenario"
+    },
+    "goal": {
+      "type": "string"
+    },
+    "goal_en": {
+      "type": "string",
+      "description": "English goal"
+    },
+    "objectives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "instructions": {
+      "type": "string"
+    },
+    "instructions_en": {
+      "type": "string",
+      "description": "English instructions"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "category": {
+      "type": "string",
+      "default": "general",
+      "description": "\u0627\u0644\u0645\u062c\u0627\u0644: web, network, osint, forensics, privilege, crypto, etc."
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "easy",
+        "medium",
+        "hard"
+      ],
+      "default": "easy"
+    },
+    "estimated_minutes": {
+      "type": "number",
+      "default": 45
+    },
+    "points": {
+      "type": "number",
+      "default": 100
+    },
+    "lab_template_id": {
+      "type": "string",
+      "description": "\u0645\u0639\u0631\u0641 \u0627\u0644\u0642\u0627\u0644\u0628 \u0627\u0644\u0645\u0631\u0633\u0644 \u0644\u0644\u0640Lab API (e.g. web-recon-01)"
+    },
+    "backend_lab_type": {
+      "type": "string",
+      "description": "\u0646\u0648\u0639 \u0627\u0644\u0644\u0627\u0628 \u0641\u064a \u0627\u0644\u062e\u0627\u062f\u0645 (API) \u2014 \u064a\u064f\u0631\u0633\u0644 \u0643\u0640lab_type"
+    },
+    "environment_id": {
+      "type": "string",
+      "description": "\u0645\u0639\u0631\u0641 \u0627\u0644\u0628\u064a\u0626\u0629 \u0641\u064a \u0627\u0644\u062e\u0627\u062f\u0645 (\u0627\u062e\u062a\u064a\u0627\u0631\u064a)"
+    },
+    "correct_flag": {
+      "type": "string",
+      "description": "\u0627\u0644\u0640Flag \u0627\u0644\u0635\u062d\u064a\u062d \u2014 \u064a\u064f\u062e\u0632\u0651\u0646 \u0641\u064a \u0627\u0644\u062e\u0627\u062f\u0645 \u0641\u0642\u0637 \u0648\u0644\u0627 \u064a\u064f\u0631\u0633\u0644 \u0644\u0644\u0645\u0633\u062a\u062e\u062f\u0645 \u0623\u0628\u062f\u064b\u0627"
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": true
+    },
+    "is_enabled": {
+      "type": "boolean",
+      "default": true,
+      "description": "\u0647\u0644 \u0627\u0644\u0644\u0627\u0628 \u0645\u062a\u0627\u062d \u0644\u0644\u062a\u0634\u063a\u064a\u0644 (\u0645\u0646\u0641\u0635\u0644 \u0639\u0646 \u0627\u0644\u0646\u0634\u0631)"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.is_published": true
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

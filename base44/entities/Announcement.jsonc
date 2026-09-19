@@ -1,0 +1,42 @@
+{
+  "name": "Announcement",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "title_en": {
+      "type": "string",
+      "description": "English title"
+    },
+    "message": {
+      "type": "string"
+    },
+    "message_en": {
+      "type": "string",
+      "description": "English message"
+    },
+    "target_audience": {
+      "type": "string",
+      "enum": [
+        "all",
+        "students",
+        "instructors",
+        "admins"
+      ],
+      "default": "all"
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": true
+    },
+    "created_date": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "title",
+    "message"
+  ]
+}

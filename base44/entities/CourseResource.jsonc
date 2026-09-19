@@ -1,0 +1,85 @@
+{
+  "name": "CourseResource",
+  "type": "object",
+  "properties": {
+    "course_id": {
+      "type": "string",
+      "description": "Subject ID this resource belongs to (unified across all tracks/specializations)"
+    },
+    "course_name": {
+      "type": "string",
+      "description": "Subject name for display"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "Public storage URL of the uploaded file"
+    },
+    "file_name": {
+      "type": "string"
+    },
+    "file_type": {
+      "type": "string",
+      "default": "pdf"
+    },
+    "file_size": {
+      "type": "number",
+      "default": 0,
+      "description": "File size in bytes"
+    },
+    "page_count": {
+      "type": "number",
+      "default": 0
+    },
+    "resource_type": {
+      "type": "string",
+      "enum": [
+        "slides",
+        "summary",
+        "cheatsheet",
+        "additional"
+      ],
+      "default": "slides"
+    },
+    "version": {
+      "type": "string",
+      "default": "1.0"
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": true
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "course_id",
+    "title",
+    "file_url"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

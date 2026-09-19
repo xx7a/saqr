@@ -1,0 +1,39 @@
+{
+  "name": "FinalProject",
+  "type": "object",
+  "properties": {
+    "track_id": {
+      "type": "string"
+    },
+    "specialization_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "instructions": {
+      "type": "string"
+    },
+    "evaluation_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "max_points": {
+      "type": "number",
+      "default": 100
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "name": "SubjectTest",
+  "type": "object",
+  "properties": {
+    "subject_id": {
+      "type": "string"
+    },
+    "subject_name": {
+      "type": "string"
+    },
+    "track_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "title_en": {
+      "type": "string",
+      "description": "English test title"
+    },
+    "description": {
+      "type": "string"
+    },
+    "description_en": {
+      "type": "string",
+      "description": "English description"
+    },
+    "pass_score": {
+      "type": "number",
+      "default": 70
+    },
+    "max_attempts": {
+      "type": "number",
+      "default": 2
+    },
+    "question_count": {
+      "type": "number",
+      "default": 0
+    },
+    "is_final": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "subject_id",
+    "title"
+  ]
+}

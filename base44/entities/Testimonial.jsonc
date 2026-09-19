@@ -1,0 +1,34 @@
+{
+  "name": "Testimonial",
+  "type": "object",
+  "properties": {
+    "student_name": {
+      "type": "string"
+    },
+    "student_role": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "rating": {
+      "type": "number",
+      "default": 5
+    },
+    "avatar_url": {
+      "type": "string"
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": true
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "student_name",
+    "content"
+  ]
+}

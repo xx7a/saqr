@@ -1,0 +1,91 @@
+{
+  "name": "Specialization",
+  "type": "object",
+  "properties": {
+    "name_ar": {
+      "type": "string"
+    },
+    "name_en": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "description_en": {
+      "type": "string",
+      "description": "English description"
+    },
+    "work_nature": {
+      "type": "string"
+    },
+    "work_nature_en": {
+      "type": "string",
+      "description": "English work nature"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "related_jobs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "subject_count": {
+      "type": "number",
+      "default": 0
+    },
+    "lesson_count": {
+      "type": "number",
+      "default": 0
+    },
+    "estimated_hours": {
+      "type": "number",
+      "default": 0
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "default": "intermediate"
+    },
+    "availability_status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "coming_soon"
+      ],
+      "default": "coming_soon"
+    },
+    "icon": {
+      "type": "string",
+      "default": "Shield"
+    },
+    "color": {
+      "type": "string",
+      "default": "#22D3EE"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "name_ar"
+  ]
+}

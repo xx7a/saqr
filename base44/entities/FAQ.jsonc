@@ -1,0 +1,36 @@
+{
+  "name": "FAQ",
+  "type": "object",
+  "properties": {
+    "question": {
+      "type": "string"
+    },
+    "question_en": {
+      "type": "string",
+      "description": "English question"
+    },
+    "answer": {
+      "type": "string"
+    },
+    "answer_en": {
+      "type": "string",
+      "description": "English answer"
+    },
+    "category": {
+      "type": "string",
+      "default": "general"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "question",
+    "answer"
+  ]
+}

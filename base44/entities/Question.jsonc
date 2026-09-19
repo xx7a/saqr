@@ -1,0 +1,63 @@
+{
+  "name": "Question",
+  "type": "object",
+  "properties": {
+    "test_id": {
+      "type": "string"
+    },
+    "subject_id": {
+      "type": "string"
+    },
+    "question_text": {
+      "type": "string"
+    },
+    "question_type": {
+      "type": "string",
+      "enum": [
+        "multiple_choice",
+        "true_false",
+        "scenario",
+        "order_steps",
+        "match_terms"
+      ],
+      "default": "multiple_choice"
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "is_correct": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "default": []
+    },
+    "correct_answer": {
+      "type": "string"
+    },
+    "explanation": {
+      "type": "string"
+    },
+    "points": {
+      "type": "number",
+      "default": 10
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "test_id",
+    "question_text"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "name": "TrackEnrollment",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "track_id": {
+      "type": "string"
+    },
+    "track_name": {
+      "type": "string"
+    },
+    "enrolled_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "progress_percent": {
+      "type": "number",
+      "default": 0
+    },
+    "last_subject_id": {
+      "type": "string"
+    },
+    "last_lesson_id": {
+      "type": "string"
+    },
+    "completed_lessons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "completed_activities": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "total_points": {
+      "type": "number",
+      "default": 0
+    },
+    "learning_time_minutes": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "completed",
+        "paused"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "user_id",
+    "track_id"
+  ]
+}

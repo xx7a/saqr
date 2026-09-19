@@ -1,0 +1,58 @@
+{
+  "name": "SiteSettings",
+  "type": "object",
+  "properties": {
+    "platform_name": {
+      "type": "string",
+      "default": "\u0635\u0642\u0631"
+    },
+    "platform_slogan": {
+      "type": "string",
+      "default": "\u062a\u0639\u0644\u0651\u0645 \u0627\u0644\u062a\u0642\u0646\u064a\u0629\u060c \u0637\u0628\u0651\u0642 \u0645\u0647\u0627\u0631\u0627\u062a\u0643\u060c \u0648\u0627\u0635\u0646\u0639 \u0645\u0633\u062a\u0642\u0628\u0644\u0643"
+    },
+    "logo_url": {
+      "type": "string",
+      "default": ""
+    },
+    "primary_color": {
+      "type": "string",
+      "default": "#22D3EE"
+    },
+    "secondary_color": {
+      "type": "string",
+      "default": "#7C3AED"
+    },
+    "hero_title": {
+      "type": "string",
+      "default": "\u0627\u0628\u062f\u0623 \u0631\u062d\u0644\u062a\u0643 \u0641\u064a \u0627\u0644\u0623\u0645\u0646 \u0627\u0644\u0633\u064a\u0628\u0631\u0627\u0646\u064a"
+    },
+    "hero_description": {
+      "type": "string",
+      "default": "\u0645\u0646\u0635\u0629 \u0639\u0631\u0628\u064a\u0629 \u062a\u0641\u0627\u0639\u0644\u064a\u0629 \u062a\u062c\u0645\u0639 \u0628\u064a\u0646 \u0627\u0644\u0634\u0631\u062d \u0648\u0627\u0644\u062a\u0637\u0628\u064a\u0642 \u0627\u0644\u0639\u0645\u0644\u064a\u060c \u0648\u062a\u0623\u062e\u0630\u0643 \u0645\u0646 \u0623\u0633\u0627\u0633\u064a\u0627\u062a \u0627\u0644\u062d\u0627\u0633\u0628 \u0625\u0644\u0649 \u0627\u0644\u062a\u062e\u0635\u0635 \u0627\u0644\u0627\u062d\u062a\u0631\u0627\u0641\u064a \u0641\u064a \u0627\u0644\u0623\u0645\u0646 \u0627\u0644\u0633\u064a\u0628\u0631\u0627\u0646\u064a."
+    },
+    "contact_email": {
+      "type": "string",
+      "default": "support@saqr.edu"
+    },
+    "footer_text": {
+      "type": "string",
+      "default": "\u00a9 2026 \u0645\u0646\u0635\u0629 \u0635\u0642\u0631 \u0627\u0644\u062a\u0639\u0644\u064a\u0645\u064a\u0629. \u062c\u0645\u064a\u0639 \u0627\u0644\u062d\u0642\u0648\u0642 \u0645\u062d\u0641\u0648\u0638\u0629."
+    },
+    "video_completion_threshold": {
+      "type": "number",
+      "default": 80
+    },
+    "test_pass_score": {
+      "type": "number",
+      "default": 70
+    },
+    "max_test_attempts": {
+      "type": "number",
+      "default": 2
+    },
+    "max_activity_attempts": {
+      "type": "number",
+      "default": 3
+    }
+  }
+}

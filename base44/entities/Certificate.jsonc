@@ -1,0 +1,77 @@
+{
+  "name": "Certificate",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "user_name": {
+      "type": "string"
+    },
+    "certificate_type": {
+      "type": "string",
+      "enum": [
+        "foundation",
+        "specialization"
+      ],
+      "default": "foundation"
+    },
+    "track_id": {
+      "type": "string"
+    },
+    "track_name": {
+      "type": "string"
+    },
+    "specialization_id": {
+      "type": "string"
+    },
+    "specialization_name": {
+      "type": "string"
+    },
+    "issue_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "verification_code": {
+      "type": "string"
+    },
+    "is_valid": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "user_id",
+    "user_name",
+    "certificate_type"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

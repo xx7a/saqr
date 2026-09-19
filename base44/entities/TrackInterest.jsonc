@@ -1,0 +1,26 @@
+{
+  "name": "TrackInterest",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "user_email": {
+      "type": "string"
+    },
+    "track_id": {
+      "type": "string"
+    },
+    "track_name": {
+      "type": "string"
+    },
+    "created_date": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_id",
+    "track_id"
+  ]
+}

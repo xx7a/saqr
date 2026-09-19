@@ -1,0 +1,65 @@
+{
+  "name": "Track",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "name_en": {
+      "type": "string",
+      "description": "English track name"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "description_en": {
+      "type": "string",
+      "description": "English description"
+    },
+    "icon": {
+      "type": "string",
+      "default": "Shield"
+    },
+    "track_type": {
+      "type": "string",
+      "enum": [
+        "foundation",
+        "specialization"
+      ],
+      "default": "foundation"
+    },
+    "parent_track_id": {
+      "type": "string"
+    },
+    "prerequisite_track_id": {
+      "type": "string"
+    },
+    "availability_status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "coming_soon",
+        "hidden"
+      ],
+      "default": "available"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    },
+    "estimated_hours": {
+      "type": "number",
+      "default": 0
+    },
+    "color": {
+      "type": "string",
+      "default": "#22D3EE"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

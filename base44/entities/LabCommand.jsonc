@@ -1,0 +1,27 @@
+{
+  "name": "LabCommand",
+  "type": "object",
+  "properties": {
+    "lab_id": {
+      "type": "string"
+    },
+    "command": {
+      "type": "string"
+    },
+    "output": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "lab_id",
+    "command",
+    "output"
+  ]
+}

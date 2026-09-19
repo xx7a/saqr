@@ -1,0 +1,82 @@
+{
+  "name": "LabLog",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "user_name": {
+      "type": "string"
+    },
+    "lab_id": {
+      "type": "string"
+    },
+    "lab_title": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "operation": {
+      "type": "string",
+      "enum": [
+        "start",
+        "stop",
+        "status",
+        "submit_flag",
+        "test_connection",
+        "test_start",
+        "test_stop",
+        "expire"
+      ],
+      "default": "start"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "success",
+        "failed"
+      ],
+      "default": "success"
+    },
+    "http_status": {
+      "type": "number"
+    },
+    "error_message": {
+      "type": "string"
+    },
+    "response_data": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "duration_ms": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "operation",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

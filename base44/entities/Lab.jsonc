@@ -1,0 +1,228 @@
+{
+  "name": "Lab",
+  "type": "object",
+  "properties": {
+    "lab_type": {
+      "type": "string",
+      "enum": [
+        "lesson",
+        "independent"
+      ],
+      "default": "lesson"
+    },
+    "lesson_id": {
+      "type": "string"
+    },
+    "subject_id": {
+      "type": "string"
+    },
+    "track_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "title_en": {
+      "type": "string",
+      "description": "English lab title"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "short_description": {
+      "type": "string"
+    },
+    "short_description_en": {
+      "type": "string",
+      "description": "English short description"
+    },
+    "scenario": {
+      "type": "string"
+    },
+    "scenario_en": {
+      "type": "string",
+      "description": "English scenario"
+    },
+    "goal": {
+      "type": "string"
+    },
+    "goal_en": {
+      "type": "string",
+      "description": "English goal"
+    },
+    "instructions": {
+      "type": "string"
+    },
+    "instructions_en": {
+      "type": "string",
+      "description": "English instructions"
+    },
+    "intro": {
+      "type": "string"
+    },
+    "intro_en": {
+      "type": "string",
+      "description": "English intro"
+    },
+    "objectives": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "title_en": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "description_en": {
+            "type": "string"
+          },
+          "answer": {
+            "type": "string"
+          },
+          "accept_values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": []
+          },
+          "explanation": {
+            "type": "string"
+          },
+          "explanation_en": {
+            "type": "string"
+          },
+          "points": {
+            "type": "number",
+            "default": 10
+          }
+        }
+      },
+      "default": []
+    },
+    "hints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "lab_interface": {
+      "type": "string",
+      "enum": [
+        "terminal",
+        "log_analysis",
+        "phishing",
+        "network_map",
+        "file_integrity",
+        "permissions",
+        "custom"
+      ],
+      "default": "terminal"
+    },
+    "lab_data": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "prerequisite_lesson_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "correct_flag": {
+      "type": "string"
+    },
+    "hint": {
+      "type": "string"
+    },
+    "hint_en": {
+      "type": "string",
+      "description": "English hint"
+    },
+    "success_message": {
+      "type": "string"
+    },
+    "success_message_en": {
+      "type": "string",
+      "description": "English success message"
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": [
+        "easy",
+        "medium",
+        "hard"
+      ],
+      "default": "easy"
+    },
+    "estimated_minutes": {
+      "type": "number",
+      "default": 15
+    },
+    "points": {
+      "type": "number",
+      "default": 20
+    },
+    "max_attempts": {
+      "type": "number",
+      "default": 3
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.is_published": true
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

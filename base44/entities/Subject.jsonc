@@ -1,0 +1,84 @@
+{
+  "name": "Subject",
+  "type": "object",
+  "properties": {
+    "track_id": {
+      "type": "string"
+    },
+    "track_name": {
+      "type": "string"
+    },
+    "specialization_id": {
+      "type": "string"
+    },
+    "specialization_name": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "name_en": {
+      "type": "string",
+      "description": "English subject name"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "description_en": {
+      "type": "string",
+      "description": "English description"
+    },
+    "icon": {
+      "type": "string",
+      "default": "BookOpen"
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    },
+    "lesson_count": {
+      "type": "number",
+      "default": 0
+    },
+    "activity_count": {
+      "type": "number",
+      "default": 0
+    },
+    "estimated_hours": {
+      "type": "number",
+      "default": 0
+    },
+    "pass_score": {
+      "type": "number",
+      "default": 70
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "locked",
+        "available",
+        "in_progress",
+        "completed"
+      ],
+      "default": "available"
+    },
+    "unlock_rule": {
+      "type": "string",
+      "enum": [
+        "sequential",
+        "free"
+      ],
+      "default": "sequential"
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "name": "TestAttempt",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "test_id": {
+      "type": "string"
+    },
+    "subject_id": {
+      "type": "string"
+    },
+    "track_id": {
+      "type": "string"
+    },
+    "attempt_number": {
+      "type": "number",
+      "default": 1
+    },
+    "answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "default": []
+    },
+    "score": {
+      "type": "number",
+      "default": 0
+    },
+    "passed": {
+      "type": "boolean",
+      "default": false
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "started_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_date": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_id",
+    "test_id"
+  ]
+}

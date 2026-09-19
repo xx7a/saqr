@@ -1,0 +1,171 @@
+{
+  "name": "CompassAttempt",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question_id": {
+            "type": "string"
+          },
+          "selected_option_id": {
+            "type": "string"
+          },
+          "is_correct": {
+            "type": "boolean",
+            "default": false
+          },
+          "specialization_id": {
+            "type": "string"
+          }
+        }
+      },
+      "default": []
+    },
+    "scores_by_spec": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "specialization_id": {
+            "type": "string"
+          },
+          "specialization_name": {
+            "type": "string"
+          },
+          "correct": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          },
+          "percent": {
+            "type": "number"
+          }
+        }
+      },
+      "default": []
+    },
+    "recommended_spec_id": {
+      "type": "string"
+    },
+    "recommended_spec_name": {
+      "type": "string"
+    },
+    "tied_spec_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "tied_spec_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "is_weak": {
+      "type": "boolean",
+      "default": false
+    },
+    "question_snapshot": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "question": {
+            "type": "string"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "text": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "correct_option_id": {
+            "type": "string"
+          },
+          "explanation": {
+            "type": "string"
+          },
+          "specialization_id": {
+            "type": "string"
+          },
+          "specialization_name": {
+            "type": "string"
+          }
+        }
+      },
+      "default": []
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "in_progress",
+        "submitted"
+      ],
+      "default": "submitted"
+    },
+    "started_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "submitted_date": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_id"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "data.user_id": "{{user.id}}"
+    },
+    "update": {
+      "data.user_id": "{{user.id}}"
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.user_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

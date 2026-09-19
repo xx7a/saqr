@@ -1,0 +1,66 @@
+{
+  "name": "Assignment",
+  "type": "object",
+  "properties": {
+    "track_id": {
+      "type": "string"
+    },
+    "subject_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "title_en": {
+      "type": "string",
+      "description": "English assignment title"
+    },
+    "description": {
+      "type": "string"
+    },
+    "description_en": {
+      "type": "string",
+      "description": "English description"
+    },
+    "instructions": {
+      "type": "string"
+    },
+    "instructions_en": {
+      "type": "string",
+      "description": "English instructions"
+    },
+    "submission_type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "file",
+        "link",
+        "any"
+      ],
+      "default": "any"
+    },
+    "due_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "max_points": {
+      "type": "number",
+      "default": 100
+    },
+    "allow_resubmit": {
+      "type": "boolean",
+      "default": true
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": true
+    },
+    "order": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "title"
+  ]
+}

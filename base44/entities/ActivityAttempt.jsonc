@@ -1,0 +1,46 @@
+{
+  "name": "ActivityAttempt",
+  "type": "object",
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "activity_id": {
+      "type": "string"
+    },
+    "lesson_id": {
+      "type": "string"
+    },
+    "attempt_number": {
+      "type": "number",
+      "default": 1
+    },
+    "user_answer": {
+      "type": "string"
+    },
+    "is_correct": {
+      "type": "boolean",
+      "default": false
+    },
+    "points_earned": {
+      "type": "number",
+      "default": 0
+    },
+    "hint_shown": {
+      "type": "boolean",
+      "default": false
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "attempt_date": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "user_id",
+    "activity_id"
+  ]
+}

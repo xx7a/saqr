@@ -1,0 +1,44 @@
+{
+  "name": "Badge",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string",
+      "default": "Award"
+    },
+    "color": {
+      "type": "string",
+      "default": "#D4A853"
+    },
+    "criteria": {
+      "type": "string"
+    },
+    "points_required": {
+      "type": "number",
+      "default": 0
+    },
+    "badge_type": {
+      "type": "string",
+      "enum": [
+        "first_lesson",
+        "first_lab",
+        "first_subject",
+        "perfect_score",
+        "foundation_complete",
+        "specialization_complete",
+        "streak",
+        "weekly_goal"
+      ],
+      "default": "first_lesson"
+    }
+  },
+  "required": [
+    "name"
+  ]
+}
