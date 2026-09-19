@@ -7,6 +7,38 @@ use Illuminate\Support\Str;
 
 class EntityController extends Controller
 {
+    private const ADMIN_WRITE_ENTITIES = [
+        'Track','Subject','Lesson','Question','LessonActivity','Specialization',
+        'CompassQuestion','CourseResource','FAQ','Announcement','Assignment',
+        'Lab','RealLab','LabSettings','SiteSettings','Testimonial','FinalProject',
+    ];
+
+    private const USER_OWNED_ENTITIES = [
+        'LessonProgress','TrackEnrollment','SpecializationEnrollment','CompassAttempt',
+        'TestAttempt','ActivityAttempt','LabProgress','RealLabCompletion',
+        'Notification','FinalExamAttempt',
+    ];
+
+    private const SERVER_ONLY_ENTITIES = [
+        'Certificate','LabReward','RealLabSession','LabLog','ActivityLog','UserBadge',
+    ];
+
+    private function guardWrite(Request $r, string $entity): void
+    {
+        $role = (string)($r->user()->role ?? 'student');
+        if ($role === 'admin') return;
+        abort_if(in_array($entity, self::ADMIN_WRITE_ENTITIES, true), 403, 'Admin access required');
+        abort_if(in_array($entity, self::SERVER_ONLY_ENTITIES, true), 403, 'This record is managed by the server');
+    }
+
+    private function sanitizeOwned(Request $r, string $entity, array $data): array
+    {
+        if (($r->user()->role ?? 'student') === 'admin') return $data;
+        if (in_array($entity, self::USER_OWNED_ENTITIES, true)) {
+            $data['user_id'] = $r->user()->id;
+        }
+        return $data;
+    }
     private function out($r)
     {
         if (!$r) return null;
@@ -98,9 +130,11 @@ class EntityController extends Controller
 
     public function store(Request $r, $e)
     {
+        $this->guardWrite($r, $e);
+        $payload = $this->sanitizeOwned($r, $e, $r->all());
         $id = (string) Str::uuid();
         DB::table('entity_records')->insert([
-            'id' => $id, 'entity' => $e, 'data' => json_encode($r->all()),
+            'id' => $id, 'entity' => $e, 'data' => json_encode($payload),
             'created_at' => now(), 'updated_at' => now()
         ]);
         return $this->show($e, $id);
@@ -108,21 +142,35 @@ class EntityController extends Controller
 
     public function update(Request $r, $e, $id)
     {
+        $this->guardWrite($r, $e);
         $row = $this->q($e)->where('id', $id)->first();
         abort_unless($row, 404);
-        $data = array_merge(json_decode($row->data, true) ?: [], $r->all());
+        $existing = json_decode($row->data, true) ?: [];
+        if (($r->user()->role ?? 'student') !== 'admin' && in_array($e, self::USER_OWNED_ENTITIES, true)) {
+            abort_unless((string)($existing['user_id'] ?? '') === (string)$r->user()->id, 403);
+        }
+        $data = array_merge($existing, $this->sanitizeOwned($r, $e, $r->all()));
         $this->q($e)->where('id', $id)->update(['data' => json_encode($data), 'updated_at' => now()]);
         return $this->show($e, $id);
     }
 
-    public function destroy($e, $id)
+    public function destroy(Request $r, $e, $id)
     {
+        $this->guardWrite($r, $e);
+        $row = $this->q($e)->where('id', $id)->first();
+        abort_unless($row, 404);
+        $data = json_decode($row->data, true) ?: [];
+        if (($r->user()->role ?? 'student') !== 'admin' && in_array($e, self::USER_OWNED_ENTITIES, true)) {
+            abort_unless((string)($data['user_id'] ?? '') === (string)$r->user()->id, 403);
+        }
         $this->q($e)->where('id', $id)->delete();
         return response()->json(['success' => true]);
     }
 
     public function deleteMany(Request $r, $e)
     {
+        $this->guardWrite($r, $e);
+        abort_unless(($r->user()->role ?? 'student') === 'admin', 403, 'Bulk delete requires admin access');
         $q = $this->q($e);
         foreach (($r->input('filters') ?: []) as $k => $v) {
             $q->whereRaw($this->jsonExpr((string)$k) . ' = ?', [(string)$v]);
@@ -132,6 +180,8 @@ class EntityController extends Controller
 
     public function bulk(Request $r, $e)
     {
+        $this->guardWrite($r, $e);
+        abort_unless(($r->user()->role ?? 'student') === 'admin', 403, 'Bulk create requires admin access');
         $out = [];
         foreach ($r->input('rows', []) as $row) {
             $id = (string) Str::uuid();
