@@ -97,6 +97,9 @@ class ImportBase44Data extends Command
         if ($trim === 'true') return true;
         if ($trim === 'false') return false;
         if ($trim === 'null') return null;
+        if (preg_match('/^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$/', $trim)) {
+            return str_contains($trim, '.') ? (float) $trim : (int) $trim;
+        }
         if ($trim !== '' && (($trim[0] ?? '') === '[' || ($trim[0] ?? '') === '{')) {
             $decoded = json_decode($trim, true);
             if (json_last_error() === JSON_ERROR_NONE) return $decoded;
