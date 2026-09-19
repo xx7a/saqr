@@ -17,6 +17,7 @@ class LabController extends Controller
             'submitCompassAttempt' => $this->submitCompass($r),
             'awardLabPoints' => $this->awardLabPoints($r),
             'issueCertificate' => $this->issueCertificate($r),
+            'verifyCertificate' => $this->verifyCertificate($r),
             'submitRealLabFlag' => $this->submitRealLabFlag($r),
             'startRealLab', 'testStartLab' => $this->start($r),
             'getRealLabStatus' => $this->status($r),
@@ -234,6 +235,15 @@ class LabController extends Controller
             'track_name' => $trackId ? ($target['name'] ?? $target['name_en'] ?? '') : '',
         ]);
         return ['certificate' => $cert, 'already_exists' => false];
+    }
+
+    public function verifyCertificate(Request $r): array
+    {
+        $code = trim((string)$r->input('code'));
+        if ($code === '') return ['valid' => false, 'error' => 'Certificate code is required'];
+        $cert = $this->one('Certificate', ['verification_code' => $code]);
+        if (!$cert || !($cert['is_valid'] ?? false)) return ['valid' => false];
+        return array_merge($cert, ['valid' => true]);
     }
 
     private function submitRealLabFlag(Request $r): array
