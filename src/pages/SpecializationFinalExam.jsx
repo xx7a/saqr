@@ -52,6 +52,7 @@ export default function SpecializationFinalExam() {
   const [searchParams] = useSearchParams();
   const isAdminPreview = user?.role === 'admin' && searchParams.get('preview') === '1';
   const backToSpecialization = isAdminPreview ? '/admin/curriculum' : `/specialization/${specId}`;
+  const layoutRole = isAdminPreview ? 'admin' : 'student';
   const questions = useMemo(shuffledQuestions, []);
   const [spec, setSpec] = useState(null);
   const [eligible, setEligible] = useState(false);
@@ -104,8 +105,8 @@ export default function SpecializationFinalExam() {
   const reset = () => { setAnswers({}); setIndex(0); setSeconds(30*60); setResult(null); setStarted(true); };
   const mm = String(Math.floor(seconds/60)).padStart(2,'0'), ss = String(seconds%60).padStart(2,'0');
 
-  if (loading) return <Layout role="student"><div className="card-base p-8 animate-pulse h-52" /></Layout>;
-  if (!eligible) return <Layout role="student"><div className="max-w-2xl mx-auto card-base p-8 text-center"><ShieldCheck className="w-12 h-12 text-primary mx-auto mb-4"/><h1 className="text-2xl font-bold mb-2">الاختبار التخصصي النهائي</h1><p className="text-foreground-secondary mb-5">يُفتح الاختبار بعد إكمال جميع دروس تخصصك.</p><Link to={backToSpecialization} className="text-primary">العودة إلى التخصص</Link></div></Layout>;
+  if (loading) return <Layout role={layoutRole}><div className="card-base p-8 animate-pulse h-52" /></Layout>;
+  if (!eligible) return <Layout role={layoutRole}><div className="max-w-2xl mx-auto card-base p-8 text-center"><ShieldCheck className="w-12 h-12 text-primary mx-auto mb-4"/><h1 className="text-2xl font-bold mb-2">الاختبار التخصصي النهائي</h1><p className="text-foreground-secondary mb-5">يُفتح الاختبار بعد إكمال جميع دروس تخصصك.</p><Link to={backToSpecialization} className="text-primary">العودة إلى التخصص</Link></div></Layout>;
 
   if (previewCertificate && result?.passed && isAdminPreview) {
     const demoCertificate = {
@@ -124,7 +125,7 @@ export default function SpecializationFinalExam() {
     </div></Layout>;
   }
 
-  if (result) return <Layout role="student"><div className="max-w-2xl mx-auto card-base p-8 text-center">
+  if (result) return <Layout role={layoutRole}><div className="max-w-2xl mx-auto card-base p-8 text-center">
     {result.passed ? <CheckCircle2 className="w-16 h-16 text-success mx-auto mb-4"/> : <XCircle className="w-16 h-16 text-destructive mx-auto mb-4"/>}
     <p className="text-sm text-primary font-medium mb-2">الاختبار التخصصي النهائي</p>
     <h1 className="text-3xl font-bold mb-2">{result.passed ? 'مبروك، اجتزت الاختبار!' : 'لم تجتز الاختبار هذه المرة'}</h1>
@@ -140,7 +141,7 @@ export default function SpecializationFinalExam() {
     </div>
   </div></Layout>;
 
-  if (!started) return <Layout role="student"><div className="max-w-3xl mx-auto space-y-5">
+  if (!started) return <Layout role={layoutRole}><div className="max-w-3xl mx-auto space-y-5">
     <div className="card-base p-8">
       <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-5"><Award className="w-7 h-7 text-primary"/></div>
       <p className="text-primary text-sm font-medium mb-2">{isAdminPreview ? 'وضع المعاينة للأدمن' : 'المرحلة الأخيرة'}</p>
@@ -157,7 +158,7 @@ export default function SpecializationFinalExam() {
   </div></Layout>;
 
   const q = questions[index];
-  return <Layout role="student"><div className="max-w-3xl mx-auto">
+  return <Layout role={layoutRole}><div className="max-w-3xl mx-auto">
     <div className="flex items-center justify-between mb-4"><div><p className="text-sm text-foreground-secondary">السؤال {index+1} من 25</p><div className="w-48 h-1.5 bg-card rounded-full mt-2"><div className="h-full bg-primary rounded-full" style={{width:`${((index+1)/25)*100}%`}}/></div></div><div className="flex items-center gap-2 font-mono text-lg"><Clock3 className="w-5 h-5 text-primary"/>{mm}:{ss}</div></div>
     <div className="card-base p-7"><h2 className="text-xl font-bold leading-8 mb-6">{q.q}</h2><div className="space-y-3">{q.options.map((o,i)=><button key={i} onClick={()=>setAnswers(a=>({...a,[q.id]:i}))} className={`w-full text-start p-4 rounded-xl border transition-colors ${answers[q.id]===i?'border-primary bg-primary/10':'border-border bg-card hover:border-primary/40'}`}><span className="inline-flex w-7 h-7 items-center justify-center rounded-lg bg-background me-3">{i+1}</span>{o.text}</button>)}</div>
       <div className="flex justify-between mt-7"><button disabled={index===0} onClick={()=>setIndex(i=>i-1)} className="px-5 py-2.5 rounded-lg border border-border disabled:opacity-30">السابق</button>{index<24?<button onClick={()=>setIndex(i=>i+1)} className="px-5 py-2.5 rounded-lg bg-primary text-primary-foreground">التالي</button>:<button onClick={finish} className="px-5 py-2.5 rounded-lg bg-success text-white font-bold">تسليم الاختبار</button>}</div>
