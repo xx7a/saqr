@@ -45,6 +45,7 @@ export COMPOSER_ALLOW_SUPERUSER=1
 
 composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
 php artisan migrate --force
+php artisan storage:link >/dev/null 2>&1 || true
 php artisan optimize:clear
 
 chown -R www-data:www-data storage bootstrap/cache database
