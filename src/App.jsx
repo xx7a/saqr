@@ -142,6 +142,7 @@ const AuthenticatedApp = () => {
         <Route path="/assignments" element={<Assignments />} />
         <Route path="/progress" element={<Progress />} />
         <Route path="/specialization/:specId/final-exam" element={<SpecializationFinalExam />} />
+
       </Route>
 
       {/* Protected admin routes */}
@@ -169,6 +170,8 @@ const AuthenticatedApp = () => {
         <Route path="/admin/lab-settings" element={<AdminLabSettings />} />
         <Route path="/admin/lab-sessions" element={<AdminLabSessions />} />
         <Route path="/admin/lab-logs" element={<AdminLabLogs />} />
+        {/* Admin-only preview of the student final exam */}
+        <Route path="/specialization/:specId/final-exam" element={<SpecializationFinalExam />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
