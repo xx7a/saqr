@@ -52,7 +52,13 @@ export default function Labs() {
         base44.entities.Lab.filter({ lab_type: 'independent', is_published: true }, 'order', 100),
         base44.entities.LabProgress.filter({ user_id: user.id }),
       ]);
-      setLabs(labsData || []);
+      const validLabs = (labsData || []).filter((lab) =>
+        lab && (
+          /^[a-f0-9]{24}$/i.test(String(lab.id || '')) ||
+          /^[0-9a-f]{8}-[0-9a-f-]{27}$/i.test(String(lab.id || ''))
+        )
+      );
+      setLabs(validLabs);
       setProgress(progressData || []);
     } catch (e) {
       console.error(e);
