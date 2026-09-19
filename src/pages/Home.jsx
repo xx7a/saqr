@@ -261,7 +261,7 @@ function PlatformPreview({ t, lang }) {
             <div className="w-2.5 h-2.5 rounded-full bg-success/60" />
           </div>
           <div className="flex-1 flex justify-center">
-            <div className="px-3 py-0.5 rounded bg-card text-xs text-foreground-secondary terminal-font" dir="ltr">saqr.base44.app/dashboard</div>
+            <div className="px-3 py-0.5 rounded bg-card text-xs text-foreground-secondary terminal-font" dir="ltr">saqr5.com/dashboard</div>
           </div>
         </div>
         <div className="p-6 bg-card">
