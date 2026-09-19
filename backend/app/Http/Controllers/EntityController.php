@@ -42,6 +42,13 @@ class EntityController extends Controller
         return $q->orderByRaw($this->jsonExpr($field) . " {$dir}");
     }
 
+    private function filterValue($value)
+    {
+        if (is_bool($value)) return $value ? 1 : 0;
+        if ($value === null) return null;
+        return (string)$value;
+    }
+
     public function index(Request $r, $e)
     {
         $q = $this->applySort($this->q($e), $r->query('sort', '-created_date'));
@@ -52,7 +59,7 @@ class EntityController extends Controller
     {
         $q = $this->q($e);
         foreach (($r->input('filters') ?: []) as $k => $v) {
-            $q->whereRaw($this->jsonExpr((string)$k) . ' = ?', [(string)$v]);
+            $q->whereRaw($this->jsonExpr((string)$k) . ' = ?', [$this->filterValue($v)]);
         }
         $q = $this->applySort($q, $r->input('sort', '-created_date'));
         return $q->limit(min((int)$r->input('limit', 100), 1000))->get()->map(fn($x) => $this->out($x));
