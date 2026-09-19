@@ -14,6 +14,7 @@ export default function ResetPassword() {
   usePageMeta(lang === 'ar' ? 'كلمة مرور جديدة | منصة صقر' : 'New password | SAQR', lang === 'ar' ? 'إعادة تعيين كلمة المرور الخاصة بحسابك في منصة صقر.' : 'Reset your SAQR account password.');
   const [searchParams] = useSearchParams();
   const resetToken = searchParams.get("token");
+  const email = searchParams.get("email");
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -29,7 +30,12 @@ export default function ResetPassword() {
     }
     setLoading(true);
     try {
-      await base44.auth.resetPassword({ resetToken, newPassword });
+      await base44.auth.resetPassword({
+        token: resetToken,
+        email,
+        password: newPassword,
+        password_confirmation: confirmPassword,
+      });
       window.location.href = "/login";
     } catch (err) {
       setError(err.message || (lang === 'ar' ? "فشل إعادة تعيين كلمة المرور" : "Failed to reset password"));
@@ -38,7 +44,7 @@ export default function ResetPassword() {
     }
   };
 
-  if (!resetToken) {
+  if (!resetToken || !email) {
     return (
       <AuthLayout
         icon={AlertTriangle}
