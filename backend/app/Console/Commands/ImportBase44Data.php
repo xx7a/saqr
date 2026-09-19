@@ -56,6 +56,10 @@ class ImportBase44Data extends Command
                     if (!$row) continue;
 
                     $sourceId = trim((string)($row['id'] ?? ''));
+                    if ($sourceId !== '' && !preg_match('/^[a-f0-9]{24}$/i', $sourceId)) {
+                        $this->warn("SKIP {$entity}: malformed source id");
+                        continue;
+                    }
                     $id = $sourceId !== '' ? $sourceId : (string)Str::uuid();
                     $created = $this->dateValue($row['created_date'] ?? null);
                     $updated = $this->dateValue($row['updated_date'] ?? null);
