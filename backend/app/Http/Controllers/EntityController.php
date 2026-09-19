@@ -44,9 +44,11 @@ class EntityController extends Controller
 
     private function filterValue($value)
     {
+        // SQLite JSON1 preserves scalar types. Keep numbers numeric so Laravel
+        // user IDs (integers) match JSON user_id values created after migration.
         if (is_bool($value)) return $value ? 1 : 0;
-        if ($value === null) return null;
-        return (string)$value;
+        if (is_int($value) || is_float($value) || $value === null) return $value;
+        return (string) $value;
     }
 
     public function index(Request $r, $e)
