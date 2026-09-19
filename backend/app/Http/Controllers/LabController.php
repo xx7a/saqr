@@ -19,6 +19,7 @@ class LabController extends Controller
             'issueCertificate' => $this->issueCertificate($r),
             'verifyCertificate' => $this->verifyCertificate($r),
             'updateUserRole' => $this->updateUserRole($r),
+            'uploadAvatar' => $this->uploadAvatar($r),
             'submitRealLabFlag' => $this->submitRealLabFlag($r),
             'startRealLab', 'testStartLab' => $this->start($r),
             'getRealLabStatus' => $this->status($r),
@@ -236,6 +237,46 @@ class LabController extends Controller
             'track_name' => $trackId ? ($target['name'] ?? $target['name_en'] ?? '') : '',
         ]);
         return ['certificate' => $cert, 'already_exists' => false];
+    }
+
+
+    private function uploadAvatar(Request $r): array
+    {
+        $user = $r->user();
+
+        if ($r->boolean('remove')) {
+            if ($user->avatar_url && str_starts_with($user->avatar_url, '/storage/avatars/')) {
+                $old = storage_path('app/public/'.substr($user->avatar_url, strlen('/storage/')));
+                if (is_file($old)) @unlink($old);
+            }
+            $user->avatar_url = null;
+            $user->save();
+            return ['removed' => true, 'avatar_url' => ''];
+        }
+
+        $contentType = (string)$r->input('content_type', '');
+        abort_unless(in_array($contentType, ['image/jpeg', 'image/png', 'image/webp'], true), 422, 'Unsupported image type');
+        $encoded = (string)$r->input('image_base64', '');
+        abort_if($encoded === '' || strlen($encoded) > 8 * 1024 * 1024, 422, 'Invalid image');
+        $bytes = base64_decode($encoded, true);
+        abort_unless($bytes !== false && strlen($bytes) <= 5 * 1024 * 1024, 422, 'Invalid image');
+
+        $info = @getimagesizefromstring($bytes);
+        abort_unless($info && in_array($info['mime'] ?? '', ['image/jpeg', 'image/png', 'image/webp'], true), 422, 'Invalid image');
+        $ext = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'][$info['mime']];
+        $name = 'user-'.$user->id.'-'.Str::random(12).'.'.$ext;
+        $dir = storage_path('app/public/avatars');
+        if (!is_dir($dir)) mkdir($dir, 0775, true);
+        file_put_contents($dir.'/'.$name, $bytes);
+
+        if ($user->avatar_url && str_starts_with($user->avatar_url, '/storage/avatars/')) {
+            $old = storage_path('app/public/'.substr($user->avatar_url, strlen('/storage/')));
+            if (is_file($old)) @unlink($old);
+        }
+        $user->avatar_url = '/storage/avatars/'.$name;
+        $user->save();
+
+        return ['avatar_url' => $user->avatar_url];
     }
 
     private function updateUserRole(Request $r): array
