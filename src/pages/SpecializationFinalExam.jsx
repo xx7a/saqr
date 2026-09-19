@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { Award, CheckCircle2, Clock3, FileQuestion, RotateCcw, ShieldCheck, XCircle } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { base44 } from '@/api/base44Client';
@@ -49,7 +49,8 @@ export default function SpecializationFinalExam() {
   const { specId } = useParams();
   const { user } = useAuth();
   const { lang } = useTranslation();
-  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isAdminPreview = user?.role === 'admin' && searchParams.get('preview') === '1';
   const questions = useMemo(shuffledQuestions, []);
   const [spec, setSpec] = useState(null);
   const [eligible, setEligible] = useState(false);
@@ -71,10 +72,10 @@ export default function SpecializationFinalExam() {
         ]);
         setSpec(s);
         const done = new Set((progress || []).filter(p => p.status === 'completed').map(p => String(p.lesson_id)));
-        setEligible((lessons || []).length > 0 && lessons.every(l => done.has(String(l.id))));
+        setEligible(isAdminPreview || ((lessons || []).length > 0 && lessons.every(l => done.has(String(l.id)))));
       } finally { setLoading(false); }
     })();
-  }, [user, specId]);
+  }, [user, specId, isAdminPreview]);
 
   const finish = async () => {
     const correct = questions.reduce((n, q) => n + (q.options[answers[q.id]]?.correct ? 1 : 0), 0);
@@ -120,7 +121,7 @@ export default function SpecializationFinalExam() {
   if (!started) return <Layout role="student"><div className="max-w-3xl mx-auto space-y-5">
     <div className="card-base p-8">
       <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-5"><Award className="w-7 h-7 text-primary"/></div>
-      <p className="text-primary text-sm font-medium mb-2">المرحلة الأخيرة</p>
+      <p className="text-primary text-sm font-medium mb-2">{isAdminPreview ? 'وضع المعاينة للأدمن' : 'المرحلة الأخيرة'}</p>
       <h1 className="text-3xl font-bold mb-2">الاختبار التخصصي النهائي</h1>
       <p className="text-foreground-secondary">{spec ? localized(spec,'name',lang) : ''}</p>
       <div className="grid sm:grid-cols-3 gap-3 mt-7">
