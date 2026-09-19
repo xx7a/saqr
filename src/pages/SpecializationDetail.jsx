@@ -328,25 +328,17 @@ export default function SpecializationDetail() {
           )}
           {isEnrolled && !firstIncompleteLesson && realLessonCount > 0 && (
             <div className="mt-4">
-              {certificate ? (
-                <Link
-                  to="/certificates"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gold text-background rounded-lg font-medium hover:scale-[1.02] transition-transform"
-                >
-                  <Award className="w-4 h-4" /> {lang === 'ar' ? 'شهادتك جاهزة — عرض وتحميل PDF' : 'Your certificate is ready — view & download PDF'}
-                </Link>
-              ) : (
-                <button
-                  onClick={handleGetCertificate}
-                  disabled={issuingCert}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-primary text-white rounded-lg font-medium hover:scale-[1.02] transition-transform disabled:opacity-50"
-                >
-                  {issuingCert ? (
-                    <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> {lang === 'ar' ? 'جارٍ إصدار الشهادة...' : 'Issuing certificate...'}</>
-                  ) : (
-                    <><Award className="w-4 h-4" /> {lang === 'ar' ? 'احصل على شهادة إكمال التخصص' : 'Get your completion certificate'}</>
-                  )}
-                </button>
+              <Link
+                to={`/specialization/${specialization.id}/final-exam`}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-primary text-white rounded-lg font-medium hover:scale-[1.02] transition-transform"
+              >
+                <Award className="w-4 h-4" /> {lang === 'ar' ? 'ابدأ الاختبار التخصصي النهائي' : 'Start final specialization exam'}
+              </Link>
+              <p className="text-xs text-foreground-secondary mt-2">
+                {lang === 'ar' ? '25 سؤالًا • 30 دقيقة • درجة النجاح 70%' : '25 questions • 30 minutes • 70% passing score'}
+              </p>
+            </div>
+          )}                </button>
               )}
             </div>
           )}
