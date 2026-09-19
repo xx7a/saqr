@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
@@ -51,6 +53,31 @@ class AuthController extends Controller
             'token' => $u->createToken('saqr')->plainTextToken,
             'user' => $u
         ];
+    }
+
+    public function forgotPassword(Request $r)
+    {
+        $r->validate(['email' => 'required|email']);
+        Password::sendResetLink(['email' => $r->email]);
+        return ['success' => true];
+    }
+
+    public function resetPassword(Request $r)
+    {
+        $v = $r->validate([
+            'email' => 'required|email',
+            'token' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $status = Password::reset($v, function (User $user, string $password) {
+            $user->forceFill(['password' => Hash::make($password)])->setRememberToken(Str::random(60));
+            $user->save();
+            $user->tokens()->delete();
+        });
+
+        abort_unless($status === Password::PASSWORD_RESET, 422, __($status));
+        return ['success' => true];
     }
 
     public function googleRedirect()
