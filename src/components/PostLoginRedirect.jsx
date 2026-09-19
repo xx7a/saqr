@@ -15,8 +15,8 @@ const LoadingFallback = () => (
 export default function PostLoginRedirect() {
   const { isAuthenticated, isLoadingAuth, authChecked, effectiveRole } = useAuth();
 
-  const params = new URLSearchParams(window.location.search);
-  const oauthToken = params.get('token');
+  const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+  const oauthToken = hashParams.get('token');
 
   useEffect(() => {
     if (oauthToken) {
